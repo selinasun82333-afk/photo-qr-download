@@ -18,6 +18,7 @@
       display: block;
     }
     .description { font-size: 16px; color: #666; margin-top: 15px; line-height: 1.6; text-align: center; }
+    .expiry-notice { font-size: 13px; color: #e91e63; margin-top: 8px; text-align: center; font-weight: 500; }
     .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
     .photo-item {
       position: relative; aspect-ratio: 1; border-radius: 15px; overflow: hidden;
@@ -64,6 +65,7 @@
     <div class="header">
       <img src="logo.png" alt="사진기억 Photo Memories" class="header-logo">
       <p class="description">특별한 순간을 함께 간직하세요</p>
+      <p id="expiry-notice" class="expiry-notice"></p>
     </div>
     <div id="gallery" class="gallery"></div>
     <div class="footer"><p>© 2025 PhotoBooth. All rights reserved.</p></div>
@@ -91,6 +93,12 @@
         if (!photos.length) {
           galleryEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">📸</div><div class="empty-title">사진을 찾을 수 없습니다</div><div class="empty-message">링크가 만료되었거나 잘못된 주소입니다.</div></div>';
           return;
+        }
+        var createdAt = new Date(photos[0].created_at);
+        var expiryDate = new Date(createdAt.getTime() + 7 * 24 * 60 * 60 * 1000);
+        var noticeEl = document.getElementById('expiry-notice');
+        if (noticeEl) {
+          noticeEl.textContent = '다운로드는 ' + (expiryDate.getMonth() + 1) + '월 ' + expiryDate.getDate() + '일까지 가능합니다.';
         }
         galleryEl.innerHTML = '';
         photos.forEach(function(p) {
