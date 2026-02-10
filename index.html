@@ -1,130 +1,126 @@
 <!DOCTYPE html>
 <html lang="ko">
-  <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Photo Memories</title>
-      <style>
-                * { margin: 0; padding: 0; box-sizing: border-box; }
-                body {
-                              font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-                              background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
-                              min-height: 100vh; padding: 40px 20px;
-                }
-                .container { max-width: 1000px; margin: 0 auto; }
-                .header { text-align: center; margin-bottom: 60px; }
-                .logo {
-                              width: 120px; height: 120px; margin: 0 auto 30px;
-                              background: linear-gradient(135deg, #ff69b4 0%, #ba68c8 50%, #7986cb 100%);
-                              border-radius: 30px; display: flex; align-items: center; justify-content: center;
-                              font-size: 60px; box-shadow: 0 10px 30px rgba(255,105,180,0.2);
-                }
-                .title { font-size: 36px; font-weight: 700; color: #333; margin-bottom: 10px; letter-spacing: 2px; }
-                .subtitle { font-size: 14px; color: #999; letter-spacing: 3px; font-weight: 500; }
-                .description { font-size: 16px; color: #666; margin-top: 30px; line-height: 1.6; }
-                .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
-                .photo-item {
-                              position: relative; aspect-ratio: 1; border-radius: 15px; overflow: hidden;
-                              background: #f5f5f5; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;
-                              box-shadow: 0 5px 15px rgba(0,0,0,0.1);
-                }
-                .photo-item:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
-                .photo-img { width: 100%; height: 100%; object-fit: cover; }
-                .photo-overlay {
-                              position: absolute; top: 0; left: 0; right: 0; bottom: 0;
-                              background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;
-                              opacity: 0; transition: opacity 0.3s ease;
-                }
-                .photo-item:hover .photo-overlay { opacity: 1; }
-                .download-btn {
-                              width: 56px; height: 56px; border-radius: 50%;
-                              background: linear-gradient(135deg, #ff69b4 0%, #ba68c8 100%);
-                              border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
-                              font-size: 24px; color: white; box-shadow: 0 5px 20px rgba(255,105,180,0.4);
-                              transition: transform 0.2s ease;
-                }
-                .download-btn:hover { transform: scale(1.1); }
-                .empty-state { text-align: center; padding: 60px 20px; }
-                .empty-icon { font-size: 64px; margin-bottom: 20px; }
-                .empty-title { font-size: 20px; color: #333; margin-bottom: 10px; }
-                .empty-message { font-size: 14px; color: #999; }
-                .loading { text-align: center; padding: 40px 20px; font-size: 16px; color: #999; }
-                .spinner {
-                              display: inline-block; width: 40px; height: 40px;
-                              border: 4px solid #f3f3f3; border-top: 4px solid #ff69b4;
-                              border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
-                }
-                @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
-                .footer { text-align: center; padding: 30px 0; color: #999; font-size: 12px; border-top: 1px solid rgba(0,0,0,0.05); }
-                @media (max-width: 768px) {
-                              .title { font-size: 28px; }
-                              .gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
-                              .download-btn { width: 48px; height: 48px; font-size: 20px; }
-                }
-            </style>
-  </head>
-  <body>
-        <div class="container">
-                  <div class="header">
-                                <div class="logo">📸</div>div>
-                                <h1 class="title">사진기억</h1>h1>
-                                <p class="subtitle">PHOTO MEMORIES</p>p>
-                                <p class="description">특별한 순간을 함께 간직하세요</p>p>
-                  </div>div>
-                  <div id="gallery" class="gallery"></div>div>
-                  <div class="footer"><p>© 2025 PhotoBooth. All rights reserved.</p></div>div>
-        </div>div>
-      <script>
-                const SUPABASE_URL = 'https://mqardkxrcpyzeyvneqfv.supabase.co';
-                const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1xYXJka3hyY3B5emV5dm5lcWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MzY1MDk3MTcsImV4cCI6MjA1MjA4NTcxN30.CjNKyqn6P64q2r3Y_EjKXYgLgBiJHJHpzspKZ7F_lNI';
-                const urlPath = window.location.pathname;
-                const sessionSlug = urlPath.split('/').filter(Boolean).pop();
-                const galleryEl = document.getElementById('gallery');
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Photo Memories</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      background: linear-gradient(135deg, #fce4ec 0%, #f3e5f5 100%);
+      min-height: 100vh; padding: 40px 20px;
+    }
+    .container { max-width: 1000px; margin: 0 auto; }
+    .header { text-align: center; margin-bottom: 60px; }
+    .logo {
+      width: 120px; height: 120px; margin: 0 auto 30px;
+      background: linear-gradient(135deg, #ff69b4 0%, #ba68c8 50%, #7986cb 100%);
+      border-radius: 30px; display: flex; align-items: center; justify-content: center;
+      font-size: 60px; box-shadow: 0 10px 30px rgba(255,105,180,0.2);
+    }
+    .title { font-size: 36px; font-weight: 700; color: #333; margin-bottom: 10px; letter-spacing: 2px; }
+    .subtitle { font-size: 14px; color: #999; letter-spacing: 3px; font-weight: 500; }
+    .description { font-size: 16px; color: #666; margin-top: 30px; line-height: 1.6; }
+    .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
+    .photo-item {
+      position: relative; aspect-ratio: 1; border-radius: 15px; overflow: hidden;
+      background: #f5f5f5; cursor: pointer; transition: transform 0.3s ease, box-shadow 0.3s ease;
+      box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+    }
+    .photo-item:hover { transform: translateY(-5px); box-shadow: 0 15px 30px rgba(0,0,0,0.15); }
+    .photo-img { width: 100%; height: 100%; object-fit: cover; }
+    .photo-overlay {
+      position: absolute; top: 0; left: 0; right: 0; bottom: 0;
+      background: rgba(0,0,0,0.4); display: flex; align-items: center; justify-content: center;
+      opacity: 0; transition: opacity 0.3s ease;
+    }
+    .photo-item:hover .photo-overlay { opacity: 1; }
+    .download-btn {
+      width: 56px; height: 56px; border-radius: 50%;
+      background: linear-gradient(135deg, #ff69b4 0%, #ba68c8 100%);
+      border: none; cursor: pointer; display: flex; align-items: center; justify-content: center;
+      font-size: 24px; color: white; box-shadow: 0 5px 20px rgba(255,105,180,0.4);
+      transition: transform 0.2s ease;
+    }
+    .download-btn:hover { transform: scale(1.1); }
+    .empty-state { text-align: center; padding: 60px 20px; }
+    .empty-icon { font-size: 64px; margin-bottom: 20px; }
+    .empty-title { font-size: 20px; color: #333; margin-bottom: 10px; }
+    .empty-message { font-size: 14px; color: #999; }
+    .loading { text-align: center; padding: 40px 20px; font-size: 16px; color: #999; }
+    .spinner {
+      display: inline-block; width: 40px; height: 40px;
+      border: 4px solid #f3f3f3; border-top: 4px solid #ff69b4;
+      border-radius: 50%; animation: spin 1s linear infinite; margin-bottom: 20px;
+    }
+    @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
+    .footer { text-align: center; padding: 30px 0; color: #999; font-size: 12px; border-top: 1px solid rgba(0,0,0,0.05); }
+    @media (max-width: 768px) {
+      .title { font-size: 28px; }
+      .gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
+      .download-btn { width: 48px; height: 48px; font-size: 20px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div class="header">
+      <div class="logo">📸</div>
+      <h1 class="title">사진기억</h1>
+      <p class="subtitle">PHOTO MEMORIES</p>
+      <p class="description">특별한 순간을 함께 간직하세요</p>
+    </div>
+    <div id="gallery" class="gallery"></div>
+    <div class="footer"><p>© 2025 PhotoBooth. All rights reserved.</p></div>
+  </div>
+  <script>
+    const SUPABASE_URL = 'https://mqardkxrcpyzeyvneqfv.supabase.co';
+    const SUPABASE_ANON_KEY = 'eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im1xYXJka3hyY3B5emV5dm5lcWZ2Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3NzA2NTgwNzUsImV4cCI6MjA4NjIzNDA3NX0.eR-n0ckL0eyKvvfFOS4skiMBi9k_CoBs8zx7rX-Z9AU';
+    const urlPath = window.location.pathname;
+    const sessionSlug = urlPath.split('/').filter(Boolean).pop();
+    const galleryEl = document.getElementById('gallery');
 
-                async function loadPhotos() {
-                              if (!sessionSlug) {
-                                                galleryEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">📸</div><div class="empty-title">세션을 선택해주세요</div><div class="empty-message">QR코드를 스캔하여 접속해주세요.</div></div>';
-                                                return;
-                              }
-                              try {
-                                                galleryEl.innerHTML = '<div class="loading" style="grid-column:1/-1;"><div class="spinner"></div><p>사진을 불러오는 중...</p></div>';
-                                                const res = await fetch(
-                                                                      SUPABASE_URL + '/rest/v1/photos?session_slug=eq.' + sessionSlug + '&order=sort_order.asc',
-                                                  { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY } }
-                                                                  );
-                                                if (!res.ok) throw new Error('API error');
-                                                const photos = await res.json();
-                                                if (!photos.length) {
-                                                                      galleryEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">📸</div><div class="empty-title">사진을 찾을 수 없습니다</div><div class="empty-message">링크가 만료되었거나 잘못된 주소입니다.</div></div>';
-                                                                      return;
-                                                }
-                                                galleryEl.innerHTML = '';
-                                                photos.forEach(function(p) {
-                                                                      var imgUrl = SUPABASE_URL + '/storage/v1/object/public/photos/' + p.file_path;
-                                                                      var div = document.createElement('div');
-                                                                      div.className = 'photo-item';
-                                                                      div.innerHTML = '<img src="' + imgUrl + '" alt="Photo" class="photo-img" loading="lazy"><div class="photo-overlay"><button class="download-btn" title="다운로드">⬇️</button></div>';
-                                                                      div.querySelector('.download-btn').addEventListener('click', function(e) {
-                                                                                                e.stopPropagation();
-                                                                                                var a = document.createElement('a');
-                                                                                                a.href = imgUrl;
-                                                                                                a.download = p.file_name || 'photo.jpg';
-                                                                                                document.body.appendChild(a);
-                                                                                                a.click();
-                                                                                                document.body.removeChild(a);
-                                                                      });
-                                                                      galleryEl.appendChild(div);
-                                                });
-                              } catch(e) {
-                                                console.error(e);
-                                                galleryEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">⚠️</div><div class="empty-title">오류가 발생했습니다</div><div class="empty-message">잠시 후 다시 시도해주세요.</div></div>';
-                              }
-                }
-                document.addEventListener('DOMContentLoaded', loadPhotos);
-      </script>
-  </body>
-</html>html>
-      </script></p>
-  </body>
-      </style></title>
-  </head>
+    async function loadPhotos() {
+      if (!sessionSlug) {
+        galleryEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">📸</div><div class="empty-title">세션을 선택해주세요</div><div class="empty-message">QR코드를 스캔하여 접속해주세요.</div></div>';
+        return;
+      }
+      try {
+        galleryEl.innerHTML = '<div class="loading" style="grid-column:1/-1;"><div class="spinner"></div><p>사진을 불러오는 중...</p></div>';
+        const res = await fetch(
+          SUPABASE_URL + '/rest/v1/photos?session_slug=eq.' + sessionSlug + '&order=sort_order.asc',
+          { headers: { 'apikey': SUPABASE_ANON_KEY, 'Authorization': 'Bearer ' + SUPABASE_ANON_KEY } }
+        );
+        if (!res.ok) throw new Error('API error');
+        const photos = await res.json();
+        if (!photos.length) {
+          galleryEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">📸</div><div class="empty-title">사진을 찾을 수 없습니다</div><div class="empty-message">링크가 만료되었거나 잘못된 주소입니다.</div></div>';
+          return;
+        }
+        galleryEl.innerHTML = '';
+        photos.forEach(function(p) {
+          var imgUrl = SUPABASE_URL + '/storage/v1/object/public/photos/' + p.file_path;
+          var div = document.createElement('div');
+          div.className = 'photo-item';
+          div.innerHTML = '<img src="' + imgUrl + '" alt="Photo" class="photo-img" loading="lazy"><div class="photo-overlay"><button class="download-btn" title="다운로드">⬇️</button></div>';
+          div.querySelector('.download-btn').addEventListener('click', function(e) {
+            e.stopPropagation();
+            var a = document.createElement('a');
+            a.href = imgUrl;
+            a.download = p.file_name || 'photo.jpg';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+          });
+          galleryEl.appendChild(div);
+        });
+      } catch(e) {
+        console.error(e);
+        galleryEl.innerHTML = '<div class="empty-state" style="grid-column:1/-1;"><div class="empty-icon">⚠️</div><div class="empty-title">오류가 발생했습니다</div><div class="empty-message">잠시 후 다시 시도해주세요.</div></div>';
+      }
+    }
+    document.addEventListener('DOMContentLoaded', loadPhotos);
+  </script>
+</body>
+</html>
