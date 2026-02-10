@@ -13,15 +13,11 @@
     }
     .container { max-width: 1000px; margin: 0 auto; }
     .header { text-align: center; margin-bottom: 60px; }
-    .logo {
-      width: 120px; height: 120px; margin: 0 auto 30px;
-      background: linear-gradient(135deg, #ff69b4 0%, #ba68c8 50%, #7986cb 100%);
-      border-radius: 30px; display: flex; align-items: center; justify-content: center;
-      font-size: 60px; box-shadow: 0 10px 30px rgba(255,105,180,0.2);
+    .header-logo {
+      max-width: 360px; height: auto; margin: 0 auto 20px;
+      display: block;
     }
-    .title { font-size: 36px; font-weight: 700; color: #333; margin-bottom: 10px; letter-spacing: 2px; }
-    .subtitle { font-size: 14px; color: #999; letter-spacing: 3px; font-weight: 500; }
-    .description { font-size: 16px; color: #666; margin-top: 30px; line-height: 1.6; }
+    .description { font-size: 16px; color: #666; margin-top: 15px; line-height: 1.6; text-align: center; }
     .gallery { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 20px; margin-bottom: 40px; }
     .photo-item {
       position: relative; aspect-ratio: 1; border-radius: 15px; overflow: hidden;
@@ -57,7 +53,7 @@
     @keyframes spin { 0% { transform: rotate(0deg); } 100% { transform: rotate(360deg); } }
     .footer { text-align: center; padding: 30px 0; color: #999; font-size: 12px; border-top: 1px solid rgba(0,0,0,0.05); }
     @media (max-width: 768px) {
-      .title { font-size: 28px; }
+      .header-logo { max-width: 260px; }
       .gallery { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); gap: 15px; }
       .download-btn { width: 48px; height: 48px; font-size: 20px; }
     }
@@ -66,9 +62,7 @@
 <body>
   <div class="container">
     <div class="header">
-      <div class="logo">📸</div>
-      <h1 class="title">사진기억</h1>
-      <p class="subtitle">PHOTO MEMORIES</p>
+      <img src="logo.png" alt="사진기억 Photo Memories" class="header-logo">
       <p class="description">특별한 순간을 함께 간직하세요</p>
     </div>
     <div id="gallery" class="gallery"></div>
